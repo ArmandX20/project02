@@ -1,5 +1,18 @@
 <p>
     <a href="{% url 'learning:index' %}">Learning</a> -
-    <a href="{% url 'learning:topics' %}">Topics</a> -  
+    <a href="{% url 'learning:topics' %}">Topics</a> -
+    {% if user.is_authenticated %}
+        <span>Hello, {{ user.username }}.</span>
+    {% else %}
+        <a href="{% url 'accounts:register' %}">Register</a> -
+        <a href="{% url 'accounts:login' %}">Log in</a>
+    {% endif %}    
 </p>
 {% block content %}{% endblock content %}
+{% if user.is_authenticated %}
+    <hr />
+    <form action="{% url 'accounts:logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Log out</button>
+    </form>
+{% endif %}
